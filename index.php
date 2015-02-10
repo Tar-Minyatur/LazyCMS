@@ -5,13 +5,15 @@ require('config.inc.php');
 
 session_start();
 
+// Initialize template variables
 $page = new stdClass;
 $page->formAction = $_SERVER['PHP_SELF'];
 $page->error = null;
 $page->confirmation = null;
 
+// Handle POST actions
 if (isset($_POST['action'])) {
-    switch ($_POST['action']) {
+    switch ($_POST['action']) {        
         case 'login':
             if (!isset($_POST['password'])) {
                 $page->error = "You did not enter a password.";
@@ -24,10 +26,12 @@ if (isset($_POST['action'])) {
                 }
             }
             break;
+        
         case 'logout':
             unset($_SESSION['password']);
             $page->confirmation = "You have been logged out.";
             break;
+        
         case 'updateData':
             @copy(DATA_FILE, sprintf('%s_backup_%s', DATA_FILE, date('Y-m-d_H-m-s')));
             if (isset($_POST['field'])) {
@@ -43,8 +47,10 @@ if (isset($_POST['action'])) {
     }
 }
 
+// Check user's login state
 $page->loggedIn = isset($_SESSION['password']) && ($_SESSION['password'] === ADMIN_PASSWORD);
 
+// Prepare page output
 if ($page->loggedIn) {
     $json = file_get_contents("text_labels.json");
     if ($json === false) {
@@ -59,4 +65,5 @@ if ($page->loggedIn) {
     }
 }
 
+// Render page
 require('templates/index.template.php');
