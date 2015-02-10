@@ -8,9 +8,12 @@
                 <label for="field_<?php echo $index; ?>">
                     <?php echo htmlspecialchars($key); ?>:
                 </label>
-                <textarea cols="60" rows="2" name="fields[<?php echo htmlspecialchars($key); ?>]" id="field_<?php echo $index; ?>"><?php echo htmlspecialchars($value); ?></textarea>
+                <textarea cols="60"
+                          rows="2"
+                          name="fields[<?php echo htmlspecialchars($key); ?>]"
+                          id="field_<?php echo $index; ?>"><?php echo htmlspecialchars($value); ?></textarea>
                 <br />
-            <?php $index++; ?>
+                <?php $index++; ?>
             <?php endforeach; ?>
             <br /><br />
             <button type="submit">Save Changes</button>
