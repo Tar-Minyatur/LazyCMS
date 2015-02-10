@@ -12,6 +12,10 @@
                 <input type="hidden" name="action" value="logout">
                 <button type="submit">Logout</button>
             </form>
+            <form action="<?php echo $page->formAction; ?>" method="post">
+                <input type="hidden" name="action" value="generateFiles">
+                <button type="submit">Regenerate Files</button>
+            </form>
             <?php endif; ?>
         </header>
         <?php if (!is_null($page->error)): ?>
@@ -28,6 +32,7 @@
         <?php
             if ($page->loggedIn):
                 require('content_management.template.php');
+                require('generator_log.template.php');
             else:
                 require('login.template.php');
             endif;

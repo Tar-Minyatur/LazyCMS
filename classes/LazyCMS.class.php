@@ -19,6 +19,7 @@ class LazyCMS {
         $this->page->confirmation = null;
         $this->page->loggedIn = $this->isLoggedIn();
         $this->page->fields = array();
+        $this->page->generatorLog = null;
     }    
     
     public function render () {
@@ -47,21 +48,25 @@ class LazyCMS {
                     $this->page->error = "You are not logged in!";
                 }
                 break;
+            
+            case 'generateFiles':
+                if ($this->isLoggedIn()) {
+                    $this->generateFiles();
+                } else {
+                    $this->page->error = "You are not logged in!";
+                }
+                break;
         }
     }
     
     private function preparePageData () {
         if ($this->isLoggedIn()) {
-            $json = file_get_contents("text_labels.json");
-            if ($json === false) {
-                $this->page->error = sprintf('Could not read from file %s! Make sure it exists and is readable!', DATA_FILE);
+            $lazyDAO = new LazyDAO($this->dataFile);
+            $data = $lazyDAO->getTextLabels();
+            if (!is_array($data)) {
+                $this->page->error = $data;
             } else {
-                $data = json_decode($json, true, 2);
-                if (is_null($data)) {
-                    $this->page->error = sprintf('JSON in file %s is invalid!', DATA_FILE);
-                } else {
-                    $this->page->fields = $data;
-                }
+                $this->page->fields = $data;
             }
         }
     }
@@ -100,6 +105,18 @@ class LazyCMS {
             } else {
                 $this->page->error = sprintf('Changes could not be saved. Maybe file %s is not writable?', $this->dataFile);
             }
+        }
+    }
+    
+    private function generateFiles () {
+        $config = $GLOBALS['lazyConfig'];
+        $lazyGen = new LazyGenerator($this->dataFile, $config->fileMapping, $config->labelDelimiter);
+        $errorCount = $lazyGen->generate();
+        $this->page->generatorLog = $lazyGen->getLog();
+        if ($errorCount > 0) {
+            $this->page->error = 'File generation finished with errors';
+        } else {
+            $this->page->confirmation = 'All files generated successfully';
         }
     }
     
