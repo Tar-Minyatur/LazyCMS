@@ -59,4 +59,4 @@ if ($page->loggedIn) {
     }
 }
 
-require('index.template.php');
+require('templates/index.template.php');
