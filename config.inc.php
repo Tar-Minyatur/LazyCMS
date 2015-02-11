@@ -44,4 +44,5 @@ $lazyConfig->fileMapping = array(
  * Default: !
  * Example: !my_textlabel!
  */
-$lazyConfig->labelDelimiter = '!';
+$lazyConfig->labelDelimiterLeft = '!';
+$lazyConfig->labelDelimiterRight = '!';

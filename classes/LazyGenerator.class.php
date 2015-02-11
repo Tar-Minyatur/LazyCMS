@@ -78,11 +78,11 @@ class LazyGenerator {
             foreach ($data as $textLabel => $text) {
                 if (is_array($text)) {
                     foreach ($text as $subTextLabel => $subText) {
-                        $textLabels[] = sprintf('%s%s%s', $this->labelDelimiter, $subTextLabel, $this->labelDelimiter);
+                        $textLabels[] = sprintf('%s%s%s', $this->labelDelimiterLeft, $subTextLabel, $this->labelDelimiterRight);
                         $texts[] = $subText;
                     }
                 } else {
-                    $textLabels[] = sprintf('%s%s%s', $this->labelDelimiter, $textLabel, $this->labelDelimiter);
+                    $textLabels[] = sprintf('%s%s%s', $this->labelDelimiterLeft, $textLabel, $this->labelDelimiterRight);
                     $texts[] = $text;
                 }
             }
