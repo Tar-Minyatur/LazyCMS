@@ -17,6 +17,7 @@
                 <button type="submit">Regenerate Files</button>
             </form>
             <?php endif; ?>
+            <a href="<?php echo $page->homepageURL; ?>" target="_blank">Open Homepage</a>
         </header>
         <?php if (!is_null($page->error)): ?>
         <div class="error">

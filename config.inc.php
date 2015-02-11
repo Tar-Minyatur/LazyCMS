@@ -3,25 +3,30 @@ if (!defined('IN_LAZY_CMS')) {
     die('Security violation.');
 }
 
+$lazyConfig = new stdClass;
+
 /**
  * Admin Password.
  * Use a SHA1 hash here!
  * To create a new one, you can use $ php -r 'echo sha1("password");'
  */
-define('ADMIN_PASSWORD', 'd033e22ae348aeb5660fc2140aec35850c4da997');
+$lazyConfig->adminPassword = 'd033e22ae348aeb5660fc2140aec35850c4da997';
 
 /**
  * The JSON file with text labels to display and save to
  */
-define('DATA_FILE', ROOT_DIR . DIRECTORY_SEPARATOR . 'text_labels.json');
+$lazyConfig->dataFile = ROOT_DIR . DIRECTORY_SEPARATOR . 'text_labels.json';
 
 /**
  * Backup folder.
  * In this directoy old versions of the data file will be kept.
  */
-define('BACKUP_DIR', ROOT_DIR . DIRECTORY_SEPARATOR . 'backup');
+$lazyConfig->backupDir = ROOT_DIR . DIRECTORY_SEPARATOR . 'backup';
 
-$lazyConfig = new stdClass;
+/**
+ * Homepage URL.
+ */
+$lazyConfig->homepageURL = dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'output';
 
 /**
  * Code Generator File Mapping.

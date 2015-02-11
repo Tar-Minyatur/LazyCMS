@@ -2,15 +2,12 @@
 class LazyCMS {
     
     private $page;
-    private $dataFile;
-    private $adminPassword;
+    private $config;
     
-    public function __construct ($dataFile, $adminPassword) {
+    public function __construct ($config) {
         session_start();
-        $this->dataFile = $dataFile;
-        $this->adminPassword = $adminPassword;
+        $this->config = $config;
         $this->initializePageVariables();
-        $this->backupDir = BACKUP_DIR;
     }
     
     private function initializePageVariables () {
@@ -21,6 +18,7 @@ class LazyCMS {
         $this->page->loggedIn = $this->isLoggedIn();
         $this->page->fields = array();
         $this->page->generatorLog = null;
+        $this->page->homepageURL = $this->config->homepageURL;
     }    
     
     public function render () {
@@ -62,7 +60,7 @@ class LazyCMS {
     
     private function preparePageData () {
         if ($this->isLoggedIn()) {
-            $lazyDAO = new LazyDAO($this->dataFile);
+            $lazyDAO = new LazyDAO($this->config->dataFile);
             $data = $lazyDAO->getTextLabels();
             if (!is_array($data)) {
                 $this->page->error = $data;
@@ -73,14 +71,14 @@ class LazyCMS {
     }
 
     private function isLoggedIn () {
-        return isset($_SESSION['password']) && ($_SESSION['password'] === $this->adminPassword);
+        return isset($_SESSION['password']) && ($_SESSION['password'] === $this->config->adminPassword);
     }
     
     private function login ($password) {
         if (is_null($password) || (strlen($password) < 1)) {
             $this->page->error = "You did not enter a password.";
         } else {
-            if (sha1($password) === $this->adminPassword) {
+            if (sha1($password) === $this->config->adminPassword) {
                 $_SESSION['password'] = sha1($password);
                 $this->page->confirmation = "You have been logged in.";
             } else {
@@ -97,21 +95,26 @@ class LazyCMS {
     }
     
     private function updateData (array $fields) {
-        $this->backup();
+        $success = true;
+        if (!$this->backup()) {
+            $this->page->error = sprintf("Could not write backup to folder %s", $this->config->backupDir);
+            $success = false;
+        }
         if (count($fields) < 1) {
             $this->page->error = "Something went wrong. Changes could not be saved.";
+            $success = false;
+        } 
+        if (file_put_contents($this->config->dataFile, json_encode($fields)) !== false) {
+            $this->page->confirmation = "Changes have been saved.";
         } else {
-            if (file_put_contents($this->dataFile, json_encode($fields)) !== false) {
-                $this->page->confirmation = "Changes have been saved.";
-            } else {
-                $this->page->error = sprintf('Changes could not be saved. Maybe file %s is not writable?', $this->dataFile);
-            }
+            $this->page->error = sprintf('Changes could not be saved. Maybe file %s is not writable?', $this->config->dataFile);
+            $success = false;
         }
+        return $success;
     }
     
     private function generateFiles () {
-        $config = $GLOBALS['lazyConfig'];
-        $lazyGen = new LazyGenerator($this->dataFile, $config->fileMapping, $config->labelDelimiter);
+        $lazyGen = new LazyGenerator($this->config->dataFile, $this->config->fileMapping, $this->config->labelDelimiter);
         $errorCount = $lazyGen->generate();
         $this->page->generatorLog = $lazyGen->getLog();
         if ($errorCount > 0) {
@@ -122,13 +125,16 @@ class LazyCMS {
     }
     
     private function backup () {
-        if (!is_dir($this->backupDir)) {
-            if (!mkdir($this->backupDir, 0777, true)) {
+        if ($this->config->backupDir{-1} !== DIRECTORY_SEPARATOR) {
+            $this->config->backupDir .= DIRECTORY_SEPARATOR;
+        }
+        if (!is_dir($this->config->backupDir)) {
+            if (!mkdir($this->config->backupDir, 0777, true)) {
                 return;
             }
         }
-        $backupFile = sprintf('%s%s_backup_%s', $this->backupDir, basename($this->dataFile), date('Y-m-d_H-m-s'));
-        @copy($this->dataFile, $backupFile);
+        $backupFile = sprintf('%s%s_backup_%s', $this->config->backupDir, basename($this->config->dataFile), date('Y-m-d_H-i-s'));
+        return @copy($this->config->dataFile, $backupFile);
     }
     
 }
