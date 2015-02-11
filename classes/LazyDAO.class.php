@@ -13,7 +13,7 @@ class LazyDAO {
         if ($json === false) {
             $return = sprintf('Could not read from file %s! Make sure it exists and is readable!', $this->dataFile);
         } else {
-            $return = json_decode($json, true, 2);
+            $return = json_decode($json, true, 3);
             if (is_null($return)) {
                 $return = sprintf('JSON in file %s is invalid!', $this->dataFile);
             }            

@@ -125,7 +125,7 @@ class LazyCMS {
     }
     
     private function backup () {
-        if ($this->config->backupDir{-1} !== DIRECTORY_SEPARATOR) {
+        if ($this->config->backupDir{strlen($this->config->backupDir)-1} !== DIRECTORY_SEPARATOR) {
             $this->config->backupDir .= DIRECTORY_SEPARATOR;
         }
         if (!is_dir($this->config->backupDir)) {

@@ -9,6 +9,7 @@
                     <?php if (is_array($value)): ?>
                         <li>
                             <strong><?php echo htmlspecialchars($key); ?></strong>
+                            <ol>
                             <?php foreach ($value as $subkey => $subvalue): ?>
                                 <li>
                                     <label for="field_<?php echo $index; ?>">
@@ -21,6 +22,7 @@
                                 </li>
                             <?php $index++; ?>
                         <?php endforeach; ?>
+                            </ol>
                         </li>
                     <?php else: ?>
                         <li>
