@@ -15,6 +15,12 @@ define('ADMIN_PASSWORD', 'd033e22ae348aeb5660fc2140aec35850c4da997');
  */
 define('DATA_FILE', ROOT_DIR . DIRECTORY_SEPARATOR . 'text_labels.json');
 
+/**
+ * Backup folder.
+ * In this directoy old versions of the data file will be kept.
+ */
+define('BACKUP_DIR', ROOT_DIR . DIRECTORY_SEPARATOR . 'backup');
+
 $lazyConfig = new stdClass;
 
 /**

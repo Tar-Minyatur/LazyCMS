@@ -10,6 +10,7 @@ class LazyCMS {
         $this->dataFile = $dataFile;
         $this->adminPassword = $adminPassword;
         $this->initializePageVariables();
+        $this->backupDir = BACKUP_DIR;
     }
     
     private function initializePageVariables () {
@@ -121,7 +122,13 @@ class LazyCMS {
     }
     
     private function backup () {
-        @copy($this->dataFile, sprintf('%s_backup_%s', $this->dataFile, date('Y-m-d_H-m-s')));
+        if (!is_dir($this->backupDir)) {
+            if (!mkdir($this->backupDir, 0777, true)) {
+                return;
+            }
+        }
+        $backupFile = sprintf('%s%s_backup_%s', $this->backupDir, basename($this->dataFile), date('Y-m-d_H-m-s'));
+        @copy($this->dataFile, $backupFile);
     }
     
 }
