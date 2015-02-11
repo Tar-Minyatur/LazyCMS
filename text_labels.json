@@ -1,1 +1,12 @@
-{"text_label1":"Something \u00f6","text_label2":"Something else"}
+{
+    "pagetitle":"Lazy CMS - Demo",
+    "section1":{
+        "headline1":"Some Headline",
+        "textblock1":"Some text goes here..."
+    },
+    "section2":{
+        "headline2":"Some Other Headline",
+        "textblock2":"Over here we will also have quite some text..."
+    },
+    "copyright":"Copyright 2015 LazyCMS"
+}

@@ -76,8 +76,15 @@ class LazyGenerator {
             $this->log[] = sprintf('ERROR: %s', $data);
         } else {
             foreach ($data as $textLabel => $text) {
-                $textLabels[] = sprintf('%s%s%s', $this->labelDelimiter, $textLabel, $this->labelDelimiter);
-                $texts[] = $text;
+                if (is_array($text)) {
+                    foreach ($text as $subTextLabel => $subText) {
+                        $textLabels[] = sprintf('%s%s%s', $this->labelDelimiter, $subTextLabel, $this->labelDelimiter);
+                        $texts[] = $subText;
+                    }
+                } else {
+                    $textLabels[] = sprintf('%s%s%s', $this->labelDelimiter, $textLabel, $this->labelDelimiter);
+                    $texts[] = $text;
+                }
             }
         }
         
