@@ -38,8 +38,8 @@ class LazyGenerator {
                     continue;
                 }
             }
-            if (!is_writable($outputFile)) {
-                $this->log[] = sprintf('ERROR: File %s is not writable', $outputFile);
+            if (!is_writable(dirname($outputFile))) {
+                $this->log[] = sprintf('ERROR: Cannot create file in %s', dirname($outputFile));
                 $errorCount++;
                 continue;
             }
