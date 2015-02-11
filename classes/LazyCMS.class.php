@@ -114,7 +114,7 @@ class LazyCMS {
     }
     
     private function generateFiles () {
-        $lazyGen = new LazyGenerator($this->config->dataFile, $this->config->fileMapping, $this->config->labelDelimiter);
+        $lazyGen = new LazyGenerator($this->config);
         $errorCount = $lazyGen->generate();
         $this->page->generatorLog = $lazyGen->getLog();
         if ($errorCount > 0) {

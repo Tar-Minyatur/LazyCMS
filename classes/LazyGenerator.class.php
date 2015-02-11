@@ -3,14 +3,16 @@ class LazyGenerator {
     
     private $dataFile;
     private $fileMapping;
-    private $labelDelimiter;
+    private $labelDelimiterLeft;
+    private $labelDelimiterRight;
     private $log;
     private $errorCount;
     
-    public function __construct ($dataFile, array $fileMapping, $labelDelimiter = '!') {
-        $this->dataFile = $dataFile;
-        $this->fileMapping = $fileMapping;
-        $this->labelDelimiter = $labelDelimiter;
+    public function __construct ($config) {
+        $this->dataFile = $config->dataFile;
+        $this->fileMapping = $config->fileMapping;
+        $this->labelDelimiterLeft = $config->labelDelimiterLeft;
+        $this->labelDelimiterRight = $config->labelDelimiterRight;
         $this->log = array();
         $this->errorCount = 0;
     }
