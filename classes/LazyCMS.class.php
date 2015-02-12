@@ -12,6 +12,7 @@ class LazyCMS {
     
     private function initializePageVariables () {
         $this->page = new stdClass;
+        $this->page->rootDir = dirname($_SERVER['PHP_SELF']);
         $this->page->formAction = $_SERVER['PHP_SELF'];
         $this->page->error = null;
         $this->page->confirmation = null;
@@ -20,6 +21,7 @@ class LazyCMS {
         $this->page->generatorLog = null;
         $this->page->extractorLog = null;
         $this->page->homepageURL = $this->config->homepageURL;
+        $this->page->currentPage = "content";
     }    
     
     public function render () {
@@ -51,6 +53,7 @@ class LazyCMS {
             
             case 'generateFiles':
                 if ($this->isLoggedIn()) {
+                    $this->page->currentPage = "generator";
                     $this->generateFiles();
                 } else {
                     $this->page->error = "You are not logged in!";
@@ -59,6 +62,7 @@ class LazyCMS {
             
             case 'extractLabels':
                 if ($this->isLoggedIn()) {
+                    $this->page->currentPage = "extractor";
                     $this->extractLabels();
                 } else {
                     $this->page->error = "You are not logged in!";
@@ -77,12 +81,14 @@ class LazyCMS {
     
     private function preparePageData () {
         if ($this->isLoggedIn()) {
-            $lazyDAO = new LazyDAO($this->config->dataFile);
-            $data = $lazyDAO->getTextLabels();
-            if (!is_array($data)) {
-                $this->page->error = $data;
-            } else {
-                $this->page->fields = $data;
+            if ($this->page->currentPage == "content") {
+                $lazyDAO = new LazyDAO($this->config->dataFile);
+                $data = $lazyDAO->getTextLabels();
+                if (!is_array($data)) {
+                    $this->page->error = $data;
+                } else {
+                    $this->page->fields = $data;
+                }
             }
         }
     }

@@ -8,7 +8,7 @@
         </ul>
         <form action="<?php echo $page->formAction; ?>" method="post">
             <input type="hidden" name="action" value="replaceDataFile">
-            <textarea name="json" rows="10" cols="120"><?php
+            <textarea name="json" rows="20" cols="120" readonly><?php
                 echo htmlspecialchars(json_encode(
                     $page->newFields,
                     defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : 0));

@@ -1,0 +1,85 @@
+body {
+    background: #e4f8ff;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12px;
+    color: #000;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #0b3e9f;
+    color: #f0f0f0;
+    margin: 0 0 1em 0;
+    padding: 1em;
+}
+
+header form {
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+
+header button, header a {
+    background: transparent;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #fff;
+    padding: 0.3em 0.6em;
+    margin: 0 1em 0 0;
+}
+
+h1, h2 {
+    margin: 0 0 0.5em 0;
+    padding: 0;
+}
+
+section, div {
+    margin: 0 1em 1em 1em;
+    background: #bee1ff;
+    padding: 1em;
+    border-radius: 10px;
+}
+
+.error {
+    background: #f87c7c;
+    color: #fff;
+    font-weight: bold;
+}
+
+.confirmation {
+    background: #3b9a3b;
+    color: #fff;
+    font-weight: bold;
+}
+
+fieldset {
+    border: none;
+}
+
+fieldset ol {
+    list-style-type: none;
+    margin: 0 0 1em 0;
+    padding: 0;
+}
+
+fieldset ol li ol {
+    border: 1px #000 solid;
+    border-radius: 10px;
+    padding: 1em;
+}
+
+button {
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #000;
+    padding: 0.3em 0.6em;
+    margin: 0 1em 0 0;
+}
