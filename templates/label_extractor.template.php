@@ -6,6 +6,7 @@
                 <li><?php echo $logEntry; ?></li>
             <?php endforeach; ?>
         </ul>
+        <p>This is the resulting data file. If this is correct, you can save it using the button below:</p>
         <form action="<?php echo $page->formAction; ?>" method="post">
             <input type="hidden" name="action" value="replaceDataFile">
             <textarea name="json" rows="20" cols="120" readonly><?php
