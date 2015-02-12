@@ -2,3 +2,4 @@ config.inc.php
 example/output/
 example/data/
 backup/
+.idea
