@@ -30,6 +30,7 @@
                             <label for="field_<?php echo $index; ?>">
                                 <?php echo htmlspecialchars($key); ?>:
                             </label>
+                            <br />
                             <textarea cols="60"
                                       rows="2"
                                       name="fields[<?php echo htmlspecialchars($key); ?>]"
