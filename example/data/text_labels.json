@@ -1,0 +1,20 @@
+{
+    "global": {
+        "pagetitle": "LazyCMS - Demo",
+        "navelem1": "Home",
+        "navelem2": "Page 2",
+        "copyright": "\u00a9 2015 LazyCMS"
+    },
+    "input\/index.html": {
+        "headline1": "This is a headline",
+        "textblock1": "Lorem ipsum dolor sit amet...",
+        "headline2": "This is yet another headline",
+        "textblock2": "This is an awesome text block!"
+    },
+    "input\/page2.html": {
+        "headline3": "This is yet another headline",
+        "textblock3": "Text Block 3",
+        "textblock4": "Text Block 4",
+        "textblock5": "Text Block 5"
+    }
+}
