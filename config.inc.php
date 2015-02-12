@@ -35,7 +35,8 @@ $lazyConfig->homepageURL = dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR .
  * The paths need to be relative to the root dir of LazyCMS.
  */
 $lazyConfig->fileMapping = array(
-    'input/index.html' => 'output/index.html'
+    'input/index.html' => 'output/index.html',
+    'input/page2.html' => 'output/page2.html'
 );
 
 /**
@@ -44,5 +45,10 @@ $lazyConfig->fileMapping = array(
  * Default: !
  * Example: !my_textlabel!
  */
-$lazyConfig->labelDelimiterLeft = '!';
-$lazyConfig->labelDelimiterRight = '!';
+$lazyConfig->labelDelimiterLeft = '{{';
+$lazyConfig->labelDelimiterRight = '}}';
+
+$lazyConfig->labelRegEx = sprintf('/%s(?<label>[^%s]+)%s/U', 
+                                  preg_quote($lazyConfig->labelDelimiterLeft),
+                                  preg_quote($lazyConfig->labelDelimiterRight),
+                                  preg_quote($lazyConfig->labelDelimiterRight));

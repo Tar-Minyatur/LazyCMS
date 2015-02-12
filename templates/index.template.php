@@ -16,6 +16,10 @@
                 <input type="hidden" name="action" value="generateFiles">
                 <button type="submit">Regenerate Files</button>
             </form>
+            <form action="<?php echo $page->formAction; ?>" method="post">
+                <input type="hidden" name="action" value="extractLabels">
+                <button type="submit">Extract Text Labels</button>
+            </form>
             <?php endif; ?>
             <a href="<?php echo $page->homepageURL; ?>" target="_blank">Open Homepage</a>
         </header>
@@ -34,6 +38,7 @@
             if ($page->loggedIn):
                 require('content_management.template.php');
                 require('generator_log.template.php');
+                require('label_extractor.template.php');
             else:
                 require('login.template.php');
             endif;

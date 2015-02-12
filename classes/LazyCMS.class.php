@@ -18,6 +18,7 @@ class LazyCMS {
         $this->page->loggedIn = $this->isLoggedIn();
         $this->page->fields = array();
         $this->page->generatorLog = null;
+        $this->page->extractorLog = null;
         $this->page->homepageURL = $this->config->homepageURL;
     }    
     
@@ -51,6 +52,22 @@ class LazyCMS {
             case 'generateFiles':
                 if ($this->isLoggedIn()) {
                     $this->generateFiles();
+                } else {
+                    $this->page->error = "You are not logged in!";
+                }
+                break;
+            
+            case 'extractLabels':
+                if ($this->isLoggedIn()) {
+                    $this->extractLabels();
+                } else {
+                    $this->page->error = "You are not logged in!";
+                }
+                break;
+            
+            case 'replaceDataFile':
+                if ($this->isLoggedIn()) {
+                    $this->replaceDataFile(isset($_POST['json']) ? $_POST['json'] : null);
                 } else {
                     $this->page->error = "You are not logged in!";
                 }
@@ -104,7 +121,8 @@ class LazyCMS {
             $this->page->error = "Something went wrong. Changes could not be saved.";
             $success = false;
         } 
-        if (file_put_contents($this->config->dataFile, json_encode($fields)) !== false) {
+        $json = json_encode($fields, defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : 0);
+        if (file_put_contents($this->config->dataFile, $json) !== false) {
             $this->page->confirmation = "Changes have been saved.";
         } else {
             $this->page->error = sprintf('Changes could not be saved. Maybe file %s is not writable?', $this->config->dataFile);
@@ -121,6 +139,26 @@ class LazyCMS {
             $this->page->error = 'File generation finished with errors';
         } else {
             $this->page->confirmation = 'All files generated successfully';
+        }
+    }
+    
+    private function extractLabels () {
+        $lazyEx = new LazyExtractor($this->config);
+        $this->page->newFields = $lazyEx->extractFields();
+        $this->page->extractorLog = $lazyEx->getLog();
+        $this->page->confirmation = 'Fields extracted from the input files';
+    }
+    
+    private function replaceDataFile ($json) {
+        if (is_null($json)) {
+            $this->page->error = 'No JSON was provided. Could not update the data file.';
+        } else {
+            $data = json_decode($json, true, 3);
+            if (is_null($data)) {
+                $this->page->error = 'Provided data is not valid JSON. Could not update the data file.';
+            } else {
+                $this->updateData($data);
+            }
         }
     }
     
