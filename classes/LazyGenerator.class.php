@@ -30,19 +30,19 @@ class LazyGenerator {
             $outputFile = ROOT_DIR . DIRECTORY_SEPARATOR . $outputFile;
             if (!is_file($inputFile) || !is_readable($inputFile)) {
                 $this->log[] = sprintf('ERROR: File %s does not exist or is not readable', $inputFile);
-                $errorCount++;
+                $this->errorCount++;
                 continue;
             }
             if (!is_dir(dirname($outputFile))) {
                 if (!mkdir(dirname($outputFile), 0777, true)) {
                     $this->log[] = sprintf('ERROR: Could not create output folder %s', dirname($outputFile));
-                    $errorCount++;
+                    $this->errorCount++;
                     continue;
                 }
             }
             if (!is_writable(dirname($outputFile))) {
                 $this->log[] = sprintf('ERROR: Cannot create file in %s', dirname($outputFile));
-                $errorCount++;
+                $this->errorCount++;
                 continue;
             }
             $fhIn = fopen($inputFile, 'r');
@@ -50,7 +50,7 @@ class LazyGenerator {
             $fhOut = fopen($tempFile, 'w');
             if (!is_resource($fhOut)) {
                 $this->log[] = sprintf('ERROR: Temporary file %s could not be created.', $tempFile);
-                $errorCount++;
+                $this->errorCount++;
                 continue;
             }
             while (!feof($fhIn)) {
@@ -61,12 +61,13 @@ class LazyGenerator {
             fclose($fhIn);
             if (!copy($tempFile, $outputFile)) {
                 $this->log[] = sprintf('ERROR: Could not move temporary file %s to %s.', $tempFile, $outputFile);
-                $errorCount++;
+                $this->errorCount++;
             }
             if (!@unlink($tempFile)) {
                 $this->log[] = sprintf('WARNING: Could not delete temporary file %s', $tempFile);
             }
         }
+        return $this->errorCount;
     }
                 
     private function getReplaceArrays () {

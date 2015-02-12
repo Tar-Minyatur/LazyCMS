@@ -174,7 +174,7 @@ class LazyCMS {
         }
         if (!is_dir($this->config->backupDir)) {
             if (!mkdir($this->config->backupDir, 0777, true)) {
-                return;
+                return false;
             }
         }
         $backupFile = sprintf('%s%s_backup_%s', $this->config->backupDir, basename($this->config->dataFile), date('Y-m-d_H-i-s'));
