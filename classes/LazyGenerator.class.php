@@ -63,7 +63,9 @@ class LazyGenerator {
                 $this->log[] = sprintf('ERROR: Could not move temporary file %s to %s.', $tempFile, $outputFile);
                 $errorCount++;
             }
-            unlink($tempFile);
+            if (!@unlink($tempFile)) {
+                $this->log[] = sprintf('WARNING: Could not delete temporary file %s', $tempFile);
+            }
         }
     }
                 
