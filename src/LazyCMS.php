@@ -1,17 +1,21 @@
 <?php
+namespace LazyCMS;
+
 class LazyCMS {
     
     private $page;
     private $config;
+    private $passwordUtil;
     
-    public function __construct ($config) {
+    public function __construct ($config, PasswordUtil $passwordUtil) {
         session_start();
         $this->config = $config;
+        $this->passwordUtil = new PasswordUtil();
         $this->initializePageVariables();
     }
     
     private function initializePageVariables () {
-        $this->page = new stdClass;
+        $this->page = new \StdClass;
         $this->page->rootDir = dirname($_SERVER['PHP_SELF']);
         $this->page->formAction = $_SERVER['PHP_SELF'];
         $this->page->error = null;
@@ -94,15 +98,16 @@ class LazyCMS {
     }
 
     private function isLoggedIn () {
-        return isset($_SESSION['password']) && ($_SESSION['password'] === $this->config->adminPassword);
+        return isset($_SESSION['password']) &&
+               ($this->passwordUtil->passwordMatchesHash($_SESSION['password'], $this->config->adminPasswordHash));
     }
     
     private function login ($password) {
         if (is_null($password) || (strlen($password) < 1)) {
             $this->page->error = "You did not enter a password.";
         } else {
-            if (sha1($password) === $this->config->adminPassword) {
-                $_SESSION['password'] = sha1($password);
+            if ($this->passwordUtil->passwordMatchesHash($this->config->adminPasswordHash, $password)) {
+                $_SESSION['password'] = $this->passwordUtil->hashPassword($this->config->adminPasswordHash);
                 $this->page->confirmation = "You have been logged in.";
             } else {
                 $this->page->confirmation = "Wrong password.";

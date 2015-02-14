@@ -1,4 +1,6 @@
 <?php
+namespace LazyCMS;
+
 class LazyExtractor {
  
     private $labelDelimiterLeft;
