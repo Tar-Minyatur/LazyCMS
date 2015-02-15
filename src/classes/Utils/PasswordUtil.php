@@ -1,5 +1,5 @@
 <?php
-namespace LazyCMS;
+namespace LazyCMS\Utils;
 
 class PasswordUtil {
 

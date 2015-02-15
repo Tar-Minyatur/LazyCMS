@@ -10,7 +10,12 @@ if (!file_exists('config.inc.php')) {
 require 'config.inc.php';
 require 'vendor/autoload.php';
 
-error_reporting(E_ALL | E_NOTICE);
+if ($lazyConfig->debugMode) {
+    error_reporting(E_ALL);
+}
 
-$lazyCMS = new LazyCMS\LazyCMS($lazyConfig, new \LazyCMS\PasswordUtil());
-$lazyCMS->render();
+use LazyCMS\Utils\PasswordUtil;
+use League\Plates;
+
+$lazyCMS = new LazyCMS\LazyCMS($lazyConfig, new PasswordUtil(), new Plates\Engine());
+$lazyCMS->handleRequest(\LazyCMS\Utils\HttpRequest::getDefaultInstance());

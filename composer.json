@@ -13,7 +13,10 @@
         "phpunit/phpunit": "4.5.0",
         "squizlabs/php_codesniffer": "2.2.0"
     },
+    "require": {
+        "league/plates": "3.1.0"
+    },
     "autoload": {
-        "psr-4": {"LazyCMS\\": "src/"}
+        "psr-4": {"LazyCMS\\": "src/classes/"}
     }
 }

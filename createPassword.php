@@ -27,7 +27,7 @@ require 'vendor/autoload.php';
             <?php else: ?>
                 <p>
                     <strong>Password Hash:</strong>
-                    <?php $passwordUtil = new \LazyCMS\PasswordUtil(); ?>
+                    <?php $passwordUtil = new \LazyCMS\Utils\PasswordUtil(); ?>
                     <?php $hash = $passwordUtil->hashPassword($_POST['password']) ?>
                     <input type="text" value="<?php echo htmlentities($hash) ?>" />
                 </p>

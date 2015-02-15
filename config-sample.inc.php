@@ -6,6 +6,12 @@ if (!defined('IN_LAZY_CMS')) {
 $lazyConfig = new \StdClass;
 
 /**
+ * Debug Mode.
+ * Should be deactivated on production systems!
+ */
+$lazyConfig->debugMode = false;
+
+/**
  * Admin Password.
  * Open /createPassword.php in your browser to create hash for your password.
  * Default password is "admin". Don't forget to change it!
