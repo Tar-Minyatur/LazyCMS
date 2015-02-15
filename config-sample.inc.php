@@ -3,14 +3,20 @@ if (!defined('IN_LAZY_CMS')) {
     die('Security violation.');
 }
 
-$lazyConfig = new stdClass;
+$lazyConfig = new \StdClass;
+
+/**
+ * Debug Mode.
+ * Should be deactivated on production systems!
+ */
+$lazyConfig->debugMode = false;
 
 /**
  * Admin Password.
- * Use a SHA1 hash here! (Default password is "admin".)
- * To create a new one, you can use $ php -r 'echo sha1("password");'
+ * Open /createPassword.php in your browser to create hash for your password.
+ * Default password is "admin". Don't forget to change it!
  */
-$lazyConfig->adminPassword = 'd033e22ae348aeb5660fc2140aec35850c4da997';
+$lazyConfig->adminPassword = '$2a$10$i993/Xjkfn.D.m.0Gz7fdOKUZ8BNxjtPqRVQ.RpQXS0ZUOd.Rlv0W';
 
 /**
  * The JSON file with text labels to display and save to

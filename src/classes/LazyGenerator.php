@@ -1,4 +1,6 @@
 <?php
+namespace LazyCMS;
+
 class LazyGenerator {
     
     private $dataFile;
