@@ -16,7 +16,7 @@ $lazyConfig->debugMode = false;
  * Open /createPassword.php in your browser to create hash for your password.
  * Default password is "admin". Don't forget to change it!
  */
-$lazyConfig->adminPassword = '$2a$10$i993/Xjkfn.D.m.0Gz7fdOKUZ8BNxjtPqRVQ.RpQXS0ZUOd.Rlv0W';
+$lazyConfig->adminPasswordHash = '$2a$10$i993/Xjkfn.D.m.0Gz7fdOKUZ8BNxjtPqRVQ.RpQXS0ZUOd.Rlv0W';
 
 /**
  * The JSON file with text labels to display and save to
