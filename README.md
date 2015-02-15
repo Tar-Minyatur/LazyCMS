@@ -1,20 +1,22 @@
 # LazyCMS
-A very simple CMS that can edit a single JSON file with text labels.
+Lightweight CMS that generates static output files on demand instead of running on every page impression.
 
-### Goals
+### Goal
 
-Simple and easy, no unnecessary features. This is supposed to be used for very small projects
-where all that is needed is some very basic content management and nothing fancy.
+A lot of smaller web projects stumble upon the situation where some content of the website needs
+to be editable, because it might occasionally change. But do you really want to setup a fully-fledged
+CMS with all its on-the-fly page rendering just because every now and then some content is updated?
+
+We think this is not at all the right approach. Instead of rendering pages on every page impression,
+LazyCMS renders static files on demand, i.e. after you modified your content. This way the webserver
+only needs to crunch through code when it is really necessary: once per code change.
 
 ### Features
 
+- A single click triggers the code generator, which replaces text labels in all your source files
+- The source files are never touched, so the code generation is repeatable and nondestructive
 - Content can be split into into sections (with a global section for shared content)
-- Mechanism to generate output files with replaced text labels
-- Script to retrieve text labels from source files (similar to gettext)
-
-### Upcoming Features
-
-- Mechanism to render output files with replaced text labels on the fly
+- The CMS can extract text labels from the source files and generate a new data scheme (gettext approach)
 
 ### Installation
 
