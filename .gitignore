@@ -1,5 +1,6 @@
-config.inc.php
+dist/
+src/config.inc.php
 example/output/
 example/data/
-backup/
+src/backup/
 .idea

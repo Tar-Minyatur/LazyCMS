@@ -37,6 +37,6 @@
         <?php endif ?>
         
         <?php echo $this->section('content') ?>
-        <script type="text/javascript" src="assets/js/app.js"></script>
+        <script type="text/javascript" src="assets/js/LazyCMS.js"></script>
     </body>
 </html>
