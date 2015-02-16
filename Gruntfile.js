@@ -23,6 +23,10 @@ module.exports = function(grunt) {
         'copy:example',
         'compress:dist']);
 
+    grunt.registerTask('watch', [
+        // TODO Implement tasks to watch file changes and to boot up a standalone PHP server
+        ]);
+
     grunt.registerTask('default', [
         'jshint:cms_before_concat',
         'sass:build',
