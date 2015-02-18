@@ -42,7 +42,6 @@
                     <?php $index++ ?>
                 <?php endforeach ?>
             </ol>
-            <br /><br />
             <button type="submit">Save Changes</button>
         </fieldset>
     </form>
