@@ -29,6 +29,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', [
         'jshint:cms_before_concat',
+        'concat:build',
         'sass:build',
         'csslint:cms_after_sass',
         'csslint:example']);

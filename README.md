@@ -52,12 +52,17 @@ have [Node.js][4] installed, you need to run this command once to get all necess
 This will download all [Node.js][4] dependencies and setup [Composer][1] locally. From now on you only
 need to deal with `grunt`:
 
-- `$ grunt` \\
+- `$ grunt`
+
   Runs build and validation steps
-- `$ grunt watch` \\
+
+- `$ grunt watch`
+
   Fires up a development environment that auto-builds if you change a file and spawns a local PHP webserver,
   so you can immediately check out your progress on http://localhost:5000
-- `$ grunt package` \\
+
+- `$ grunt package`
+
   We use this to build our releases, so you most likely won't need it
 
 As a final step you need to copy `config-sample.inc.php` to `config.inc.php`. You probably
