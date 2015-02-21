@@ -5,3 +5,6 @@ example/data/
 src/backup/
 .idea
 src/assets/js/LazyCMS.js
+node_modules
+composer.phar
+composer.lock
