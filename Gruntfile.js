@@ -28,15 +28,11 @@ module.exports = function (grunt) {
 		'notify'
 	]);
 
-	grunt.registerTask('watch', [
-		// TODO Implement tasks to watch file changes and to boot up a standalone PHP server
-	]);
-
 	grunt.registerTask('default', [
 		'jshint:cms_before_concat',
 		'concat:build',
 		'sass:build',
 		'autoprefixer:build',
-		'notify'
+		'notify',
 	]);
 };
