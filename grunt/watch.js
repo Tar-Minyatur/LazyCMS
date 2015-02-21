@@ -10,7 +10,9 @@ module.exports = {
 		tasks: ['sass:build', 'autoprefixer:build']
 	},
 	js: {
-		files: 'src/assets/**/*.js',
+		files: [
+			'src/assets/**/*.js'
+		],
 		tasks: ['jshint:cms_before_concat', 'concat:build']
 	}
 };
