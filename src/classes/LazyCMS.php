@@ -17,7 +17,7 @@ class LazyCMS {
         $this->config = $config;
         $this->passwordUtil = new PasswordUtil();
         $this->templates = $templates;
-        $this->templates->addFolder('cms', ROOT_DIR . '/src/templates/cms');
+        $this->templates->addFolder('cms', ROOT_DIR . '/templates/cms');
         $this->initializePageVariables();
     }
     
