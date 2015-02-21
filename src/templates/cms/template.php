@@ -3,7 +3,7 @@
     <head>
         <title>Lazy CMS - <?php echo $this->e($pageTitle) ?></title>
         <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="assets/css/screen.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/main.css">
     </head>
     <body>
         <header>

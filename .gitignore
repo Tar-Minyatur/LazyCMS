@@ -8,3 +8,5 @@ src/assets/js/LazyCMS.js
 node_modules
 composer.phar
 composer.lock
+vendor
+src/assets/css

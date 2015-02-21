@@ -1,11 +1,14 @@
+/**
+ * GRUNT: DOWNLOADFILE
+ */
 module.exports = function (grunt) {
-    return {
+	'use strict';
 
-        files: [{
-            url: 'https://getcomposer.org/installer',
-            dest: '<%= cwd %>',
-            name: 'composer_installer.php'
-        }]
-
-    }
+	return {
+		files: [{
+			url: 'https://getcomposer.org/installer',
+			dest: '<%= cwd %>',
+			name: 'composer_installer.php'
+		}]
+	};
 };

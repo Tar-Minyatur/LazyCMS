@@ -1,24 +1,21 @@
-module.exports = function (grunt) {
-    return {
-
-        build: {
-            files: [{
-                expand: true,
-                cwd: 'src/assets/scss/',
-                src: 'screen.scss',
-                dest: 'src/assets/css/',
-                ext: '.css'
-            }]
-        },
-        dist: {
-            files: [{
-                expand: true,
-                cwd: 'src/assets/scss/',
-                src: 'screen.scss',
-                dest: 'dist/assets/css/',
-                ext: '.css'
-            }]
-
-        }
-    }
+/**
+ * GRUNT: SASS
+ */
+module.exports = {
+	build: {
+		options: {
+			style: 'compact'
+		},
+		files: {
+			'src/assets/css/main.css' : 'src/assets/scss/main.scss'
+		}
+	},
+	dist: {
+		options: {
+			style: 'compact'
+		},
+		files: {
+			'dist/assets/css/main.css' : 'src/assets/scss/main.scss'
+		}
+	}
 };
