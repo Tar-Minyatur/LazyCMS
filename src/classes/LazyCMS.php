@@ -1,6 +1,7 @@
 <?php
 namespace LazyCMS;
 
+use LazyCMS\Utils\FileSystemUtil;
 use LazyCMS\Utils\HttpRequest;
 use LazyCMS\Utils\PasswordUtil;
 use \League\Plates;
@@ -28,9 +29,6 @@ class LazyCMS {
         $this->page->error = null;
         $this->page->confirmation = null;
         $this->page->loggedIn = false;
-        $this->page->fields = array();
-        $this->page->generatorLog = null;
-        $this->page->extractorLog = null;
         $this->page->homepageURL = $this->config->homepageURL;
         $this->page->currentPage = "content_management";
     }    
@@ -59,7 +57,21 @@ class LazyCMS {
         } else {
             switch ($_POST['action']) {
                 case 'updateData':
-                    $this->updateData(isset($_POST['fields']) ? $_POST['fields'] : array());
+                    if (!isset($request->post->files) ||
+                        !isset($request->post->fields) ||
+                        (count($request->post->fields) !== count($request->post->files))) {
+                        $this->page->error = 'The submitted data was invalid. Changes could not be saved.';
+                    } else {
+                        for ($i = 0; $i < count($request->post->files); ++$i) {
+                            $targetFile = $this->config->dataDirectory . DIRECTORY_SEPARATOR . $request->post->files[$i];
+                            if (!$this->updateDataFile($targetFile, $request->post->fields[$i])) {
+                                $this->page->error = sprintf('Could not save to file %s.',
+                                                             $targetFile);
+                                break;
+                            }
+                        }
+                        $this->page->confirmation = 'Changes have been saved successfully';
+                    }
                     break;
 
                 case 'generateFiles':
@@ -73,7 +85,9 @@ class LazyCMS {
                     break;
 
                 case 'replaceDataFile':
-                    $this->replaceDataFile(isset($_POST['json']) ? $_POST['json'] : null);
+                    $this->replaceDataFiles(
+                        isset($request->post->files) && is_array($request->post->files) ? $request->post->files : null,
+                        isset($request->post->jsons) && is_array($request->post->jsons) ? $request->post->jsons : null);
                     break;
             }
         }
@@ -81,12 +95,17 @@ class LazyCMS {
     
     private function preparePageData () {
         if ($this->page->currentPage == "content_management") {
-            $lazyDAO = new LazyDAO($this->config->dataFile);
-            $data = $lazyDAO->getTextLabels();
-            if (!is_array($data)) {
-                $this->page->error = $data;
-            } else {
-                $this->page->fields = $data;
+            $lazyDAO = new LazyDAO($this->config->dataDirectory);
+            $files = $lazyDAO->getDataFiles();
+            $this->page->dataFiles = array();
+            foreach ($files as $file) {
+                $fields = json_decode(file_get_contents($file));
+                if (!is_null($fields)) {
+                    $file = str_replace($this->config->dataDirectory . DIRECTORY_SEPARATOR, '', $file);
+                    $this->page->dataFiles[$file] = $fields;
+                } else {
+                    $this->page->error = 'Could not read all data files. Some may be corrupted.';
+                }
             }
         }
     }
@@ -126,9 +145,9 @@ class LazyCMS {
         $this->page->confirmation = "You have been logged out.";
     }
 
-    private function updateData (array $fields) {
+    private function updateDataFile ($file, array $fields) {
         $success = true;
-        if (!$this->backup()) {
+        if (!$this->backup($file)) {
             $this->page->error = sprintf("Could not write backup to folder %s", $this->config->backupDir);
             $success = false;
         }
@@ -137,7 +156,14 @@ class LazyCMS {
             $success = false;
         }
         $json = json_encode($fields, defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : 0);
-        if (file_put_contents($this->config->dataFile, $json) !== false) {
+        $directory = dirname($file);
+        if (!file_exists($directory) || !is_dir($directory)) {
+            if (!mkdir($directory, 0777, true)) {
+                $this->page->error = sprintf('Could not create directory %s. Changes could not be saved.', $directory);
+                return false;
+            }
+        }
+        if (file_put_contents($file, $json) !== false) {
             $this->page->confirmation = "Changes have been saved.";
         } else {
             $this->page->error = sprintf('Changes could not be saved. Maybe file %s is not writable?', $this->config->dataFile);
@@ -159,20 +185,28 @@ class LazyCMS {
 
     private function extractLabels () {
         $lazyEx = new LazyExtractor($this->config);
-        $this->page->newFields = $lazyEx->extractFields();
+        $newFields = array();
+        foreach ($lazyEx->extractFields() as $file => $fields) {
+            $file = $this->config->dataDirectory . $file . '.json';
+            $newFields[$file] = json_encode($fields, defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : 0);
+        }
+        $this->page->newFields = $newFields;
         $this->page->extractorLog = $lazyEx->getLog();
         $this->page->confirmation = 'Fields extracted from the input files';
     }
 
-    private function replaceDataFile ($json) {
-        if (is_null($json)) {
-            $this->page->error = 'No JSON was provided. Could not update the data file.';
+    private function replaceDataFiles (array $files, array $jsons) {
+        if (is_null($jsons) || is_null($files) || (count($files) != count($jsons))) {
+            $this->page->error = 'Something went wrong. Could not update the data files.';
         } else {
-            $data = json_decode($json, true, 3);
-            if (is_null($data)) {
-                $this->page->error = 'Provided data is not valid JSON. Could not update the data file.';
-            } else {
-                $this->updateData($data);
+            for ($i = 0; $i < count($files); ++$i) {
+                $data = json_decode($jsons[$i], true, 2);
+                if (is_null($data)) {
+                    $this->page->error = sprintf('Data provided for file %s is not valid JSON. Could not update the data files.',
+                                                 $files[$i]);
+                } else {
+                    $this->updateDataFile($files[$i], $data);
+                }
             }
         }
     }
@@ -186,8 +220,9 @@ class LazyCMS {
                 return false;
             }
         }
-        $backupFile = sprintf('%s%s_backup_%s', $this->config->backupDir, basename($this->config->dataFile), date('Y-m-d_H-i-s'));
-        return @copy($this->config->dataFile, $backupFile);
+        $backupDirectory = sprintf('%sbackup_%s/', $this->config->backupDir, date('Y-m-d_H-i-s'));
+        $fsUtil = new FileSystemUtil();
+        return $fsUtil->recursiveCopy($this->config->dataDirectory, $backupDirectory);
     }
 
 }

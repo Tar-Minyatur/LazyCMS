@@ -1,27 +1,27 @@
 <!doctype html>
 <html>
     <head>
-        <title>{{pagetitle}}</title>
+        <title>{{global/page_title}}</title>
         <meta charset="utf-8">
     </head>
     <body>
         <header>
-            <h1>{{pagetitle}}</h1>
+            <h1>{{global/page_title}}</h1>
             <nav>
                 <ul>
-                    <li><a href="index.html">{{navelem1}}</a></li>
-                    <li><strong><a href="page2.html">{{navelem2}}</a></strong></li>
+                    <li><a href="index.html">{{global/navelem1(Index)}}</a></li>
+                    <li><strong><a href="page2.html">{{global/navelem2(Page 2)}}</a></strong></li>
                 </ul>
             </nav>
         </header>
         <section>
-            <h2>{{headline3}}</h2>
+            <h2>{{headline1}}</h2>
+            <p>{{textblock1}}</p>
+            <p>{{textblock2}}</p>
             <p>{{textblock3}}</p>
-            <p>{{textblock4}}</p>
-            <p>{{textblock5}}</p>
         </section>
         <footer>
-            <p><small>{{copyright}}</small></p>
+            <p><small>{{global/copyright}}</small></p>
         </footer>
     </body>
 </html>

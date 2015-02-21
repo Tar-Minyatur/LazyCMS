@@ -2,14 +2,16 @@
 namespace LazyCMS;
 
 class LazyExtractor {
- 
+
+    const SCOPE_GLOBAL = 'global';
+
     private $labelDelimiterLeft;
     private $labelDelimiterRight;
     private $labelRegEx;
-    private $fileMapping; 
+    private $fileMapping;
     private $log;
     private $errorCount;
-    
+
     public function __construct ($config) {
         $this->labelDelimiterLeft = $config->labelDelimiterLeft;
         $this->labelDelimiterRight = $config->labelDelimiterRight;
@@ -19,37 +21,42 @@ class LazyExtractor {
     }
     
     public function extractFields () {
-        $fields = array();
-        $sections = array('global' => array());
+        $sections = array(self::SCOPE_GLOBAL => array());
         $this->errorCount = 0;
         foreach ($this->fileMapping as $inputFile => $outputFile) {
+            $globalLabelsFound = 0;
+            $currentScope = LazyDAO::getScopeNameForFile($inputFile);
             if (!is_file($inputFile) || !is_readable($inputFile)) {
                 $this->log[] = sprintf('ERROR: File %s does not exist or is not readable', $inputFile);
                 $this->errorCount++;
                 continue;
             }
             $content = file_get_contents($inputFile);
-            if (!preg_match_all($this->labelRegEx, $content, $matches)) {
+            if (!preg_match_all($this->labelRegEx, $content, $matches, PREG_SET_ORDER)) {
                 $this->log[] = sprintf('INFO: No text labels found in file %s', $inputFile);
             }
-            $sections[$inputFile] = array();
-            foreach ($matches['label'] as $match) {
-                if (!isset($fields[$match])) {
-                    $fields[$match] = array();
+            $sections[$currentScope] = array();
+            foreach ($matches as $match) {
+                $label = $match['label'];
+                $scope = $currentScope;
+                if (array_key_exists('scope', $match) && (strlen($match['scope']))) {
+                    $scope = $match['scope'];
                 }
-                $fields[$match][] = $inputFile;
-                $sections[$inputFile][$match] = $match;
-            }
-            $this->log[] = sprintf('INFO: Found %d text labels in file %s', count($sections[$inputFile]), $inputFile);
-        }
-        foreach ($fields as $field => $where) {
-            if (count($where) > 1) {
-                $this->log[] = sprintf('INFO: Label %s is used in multiple sections; extracting into global', $field);
-                $sections['global'][$field] = $field;
-                foreach ($where as $s) {
-                    unset($sections[$s][$field]);
+                $default = null;
+                if (array_key_exists('default', $match)) {
+                    $default = $match['default'];
+                };
+                $sections[$scope][$label] = (is_null($default) || (strlen($default) == 0)) ? $label : $default;
+                if ($scope == self::SCOPE_GLOBAL) {
+                    $globalLabelsFound++;
+                } else if (array_key_exists($label, $sections[self::SCOPE_GLOBAL])) {
+                    $this->log[] = sprintf('WARNING: Label %s in file %s also exists in the global scope!', $label, $inputFile);
                 }
             }
+            $this->log[] = sprintf('INFO: Found %d local and %d global text labels in file %s',
+                                   count($sections[$currentScope]),
+                                   $globalLabelsFound,
+                                   $inputFile);
         }
         return $sections;
     }
@@ -57,5 +64,5 @@ class LazyExtractor {
     public function getLog () {
         return $this->log;
     }
-    
+
 }

@@ -2,47 +2,38 @@
 
 <section id="content">
     <h2>Content Management</h2>
-    <form action="<?php echo $formAction ?>" method="post">
-        <input type="hidden" name="action" value="updateData">
-        <fieldset>
-            <ol>
-                <?php $index = 1 ?>
-                <?php foreach ($fields as $key => $value): ?>
-                    <?php if (is_array($value)): ?>
+    <?php if (is_array($dataFiles)): ?>
+        <form action="<?php echo $formAction ?>" method="post">
+            <input type="hidden" name="action" value="updateData">
+            <fieldset>
+                <ol>
+                    <?php $fileIndex = 0 ?>
+                    <?php $fieldIndex = 0 ?>
+                    <?php foreach ($dataFiles as $file => $fields): ?>
                         <li>
-                            <strong><?php echo $this->e($key) ?></strong>
+                            <strong><?php echo $this->e($file) ?></strong>
                             <ol>
-                            <?php foreach ($value as $subkey => $subvalue): ?>
+                            <?php foreach ($fields as $field => $value): ?>
                                 <li>
-                                    <label for="field_<?php echo $index ?>">
-                                        <?php echo $this->e($subkey); ?>:
+                                    <label for="field_<?php echo $fieldIndex ?>">
+                                        <?php echo $this->e($field); ?>:
                                     </label>
                                     <br />
                                     <textarea cols="60"
                                               rows="2"
-                                              name="fields[<?php echo $this->e($key) ?>][<?php echo $this->e($subkey) ?>]"
-                                              id="field_<?php echo $index ?>"><?php echo $this->e($subvalue) ?></textarea>
+                                              name="fields[<?php echo $fileIndex ?>][<?php echo $this->e($field) ?>]"
+                                              id="field_<?php echo $fieldIndex ?>"><?php echo $this->e($value) ?></textarea>
+                                    <input type="hidden" name="files[<?php echo $fileIndex ?>]" value="<?php echo $this->e($file) ?>">
                                 </li>
-                            <?php $index++ ?>
-                        <?php endforeach ?>
+                                <?php $fieldIndex++ ?>
+                            <?php endforeach ?>
                             </ol>
                         </li>
-                    <?php else: ?>
-                        <li>
-                            <label for="field_<?php echo $index ?>">
-                                <?php echo $this->e($key) ?>:
-                            </label>
-                            <br />
-                            <textarea cols="60"
-                                      rows="2"
-                                      name="fields[<?php echo $this->e($key) ?>]"
-                                      id="field_<?php echo $index ?>"><?php echo $this->e($value) ?></textarea>
-                        </li>
-                    <?php endif ?>
-                    <?php $index++ ?>
-                <?php endforeach ?>
-            </ol>
-            <button type="submit">Save Changes</button>
-        </fieldset>
-    </form>
+                        <?php $fileIndex++ ?>
+                    <?php endforeach ?>
+                </ol>
+                <button type="submit">Save Changes</button>
+            </fieldset>
+        </form>
+    <?php endif ?>
 </section>
