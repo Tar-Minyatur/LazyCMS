@@ -32,7 +32,7 @@ $lazyConfig->backupDir = ROOT_DIR . '/backup';
 /**
  * Homepage URL.
  */
-$lazyConfig->homepageURL = dirname($_SERVER['PHP_SELF']) . '/example/output';
+$lazyConfig->homepageURL = dirname($_SERVER['PHP_SELF']) . '/../example/output';
 
 /**
  * Code Generator File Mapping.
@@ -41,8 +41,8 @@ $lazyConfig->homepageURL = dirname($_SERVER['PHP_SELF']) . '/example/output';
  * The paths need to be relative to the root dir of LazyCMS.
  */
 $lazyConfig->fileMapping = array(
-    'example/input/index.html' => 'example/output/index.html',
-    'example/input/page2.html' => 'example/output/page2.html'
+    '../example/input/index.html' => '../example/output/index.html',
+    '../example/input/page2.html' => '../example/output/page2.html'
 );
 
 /**

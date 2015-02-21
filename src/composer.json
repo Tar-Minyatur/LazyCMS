@@ -1,6 +1,6 @@
 {
     "name": "tshw/lazycms",
-    "description": "A very simple CMS that can edit a single JSON file with text labels.",
+    "description": "A lightweight CMS that generates static output files on demand instead of running on every page impression.",
     "minimum-stability": "stable",
     "authors": [
         {
@@ -17,6 +17,6 @@
         "league/plates": "3.1.0"
     },
     "autoload": {
-        "psr-4": {"LazyCMS\\": "src/classes/"}
+        "psr-4": {"LazyCMS\\": "classes/"}
     }
 }
