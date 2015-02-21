@@ -3,7 +3,7 @@ Lightweight CMS that generates static output files on demand instead of running 
 
 ### Goal
 
-A lot of smaller web projects stumble upon the situation where some content of the website needs
+A lot of smaller web projects stumble into the situation where some content of the website needs
 to be editable, because it might occasionally change. But do you really want to setup a fully-fledged
 CMS with all its on-the-fly page rendering just because every now and then some content is updated?
 
@@ -14,9 +14,11 @@ only needs to crunch through code when it is really necessary: once per code cha
 ### Features
 
 - A single click triggers the code generator, which replaces text labels in all your source files
-- The source files are never touched, so the code generation is repeatable and nondestructive
-- Content can be split into into sections (with a global section for shared content)
+- The source files are never touched, so the code generation is repeatable and non-destructive
+- Content is scoped by source files and can also be defined global and shared between all files
 - The CMS can extract text labels from the source files and generate a new data scheme (gettext approach)
+
+And we still have a lot of ideas for new features and improvements, so visit us again to see what we came up with. :)
 
 ### How to use?
 
@@ -58,8 +60,7 @@ need to deal with `grunt`:
 
 - `$ grunt watch`
 
-  Fires up a development environment that auto-builds if you change a file and spawns a local PHP webserver,
-  so you can immediately check out your progress on http://localhost:5000
+  Builds the project once and afterwards keep a lookout for changes to vital files, which then will be run automatically through the build process
 
 - `$ grunt package`
 
