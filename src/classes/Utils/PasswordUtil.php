@@ -12,8 +12,8 @@ class PasswordUtil {
     }
 
     public function hashPassword ($password) {
-        if (function_exists('password_hash' && defined('PASSWORD_DEFAULT'))) {
-            $passwordHash = password_hash($password, PASSWORD_DEFAUlT);
+        if (function_exists('password_hash') && defined('PASSWORD_DEFAULT')) {
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         } else {
             $salt = $this->getRandomSalt();
             $passwordHash = crypt($password, $salt);
@@ -22,7 +22,17 @@ class PasswordUtil {
     }
 
     private function getRandomSalt () {
-        $salt = strtr(base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), '+', '.');
+        $iv = substr(sha1(rand()), 0, 16);
+        if (!function_exists('mcrypt_create_iv')) {
+            $iv = mcrypt_create_iv(16, MCRYPT_DEV_URANDOM);
+        }
+        else if (function_exists('openssl_random_pseudo_bytes')) {
+            $iv = openssl_random_pseudo_bytes(16);
+        }
+        else if (function_exists('mt_rand')) {
+            $iv = substr(sha1(mt_rand()), 0, 16);
+        }
+        $salt = strtr(base64_encode($iv), '+', '.');
         $salt = sprintf("$2a$%02d$%s", $this->cost, $salt);
         return $salt;
     }
