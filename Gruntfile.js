@@ -24,7 +24,8 @@ module.exports = function (grunt) {
 		'sass:dist',
 		'autoprefixer:dist',
 		'copy:example',
-		'compress:dist'
+		'compress:dist',
+		'notify'
 	]);
 
 	grunt.registerTask('watch', [
@@ -35,6 +36,7 @@ module.exports = function (grunt) {
 		'jshint:cms_before_concat',
 		'concat:build',
 		'sass:build',
-		'autoprefixer:build'
+		'autoprefixer:build',
+		'notify'
 	]);
 };
