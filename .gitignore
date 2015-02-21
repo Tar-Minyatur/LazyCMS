@@ -4,3 +4,4 @@ example/output/
 example/data/
 src/backup/
 .idea
+src/assets/js/LazyCMS.js
