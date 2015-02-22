@@ -13,7 +13,7 @@ install:
 script:
   - grunt package
 after_success:
-    "curl --ftp-create-dirs -T dist/LazyCMS-*.zip -u $FTP_USER:$FTP_PASSWORD ftp://${FTP_HOST}/"
+    "curl --ftp-create-dirs -T dist/LazyCMS-*.zip -u $FTP_USER:$FTP_PASSWORD ftp://${FTP_HOST}/${FTP_PATH}"
 branches:
   only:
     - master
