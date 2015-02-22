@@ -21,3 +21,9 @@ notifications:
   email:
     on_success: change
     on_failure: always
+  webhooks:
+    urls:
+      - $WEBHOOK_URL
+    on_success: always
+    on_failure: never
+    on_start: false
