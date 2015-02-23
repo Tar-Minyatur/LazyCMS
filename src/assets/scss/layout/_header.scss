@@ -1,0 +1,36 @@
+/**
+* HEADER
+*/
+#lazyheader {
+	background: $blue;
+	color: #ffffff;
+	width: 100%;
+	height: auto;
+	padding: 15px;
+	margin-bottom: 15px;
+	position: relative;
+	z-index: z($page-sections, header);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, .26);
+	display: flex;
+}
+
+.lazyheader__title {
+}
+
+.lazyheader__nav {
+	form {
+		display: inline;
+		padding: 0;
+		margin: 0;
+	}
+
+	button, a {
+		background: transparent;
+		color: #fff;
+		text-decoration: none;
+		border-radius: 5px;
+		border: 1px solid #fff;
+		padding: 0.3em 0.6em;
+		margin: 0 1em 0 0;
+	}
+}

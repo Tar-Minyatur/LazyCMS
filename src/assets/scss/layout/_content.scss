@@ -1,0 +1,7 @@
+/**
+ * CONTENT
+ */
+#lazycontent {
+	position: relative;
+	z-index: z($page-sections, content);
+}

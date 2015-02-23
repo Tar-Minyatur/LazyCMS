@@ -1,10 +1,26 @@
 @charset "UTF-8";
 
 /*!
- * INIT
- * normalize all elements on each browser.
+ * UTILS
  */
-@import "globals/_normalize";
+@import "utils/__utils";
 
-// Delete later.
-@import "_shame";
+/*!
+ * GLOBALS
+ */
+@import "globals/__globals";
+
+/*!
+ * COMPONENTS
+ */
+@import "components/__components";
+
+/*!
+ * LAYOUT
+ */
+@import "layout/__layout";
+
+/*!
+ * PAGES
+ */
+@import "pages/__pages";

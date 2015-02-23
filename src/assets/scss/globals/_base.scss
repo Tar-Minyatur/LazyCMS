@@ -1,38 +1,28 @@
+/**
+ * BASE
+ */
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
 body {
-    background: #e4f8ff;
-    font-family: Verdana, Arial, sans-serif;
-    font-size: 12px;
-    color: #000;
-    margin: 0;
-    padding: 0;
+	background: $grey-200;
+	font-family: $Roboto;
+	font-weight: 300;
+	color: #000000;
+	// Enable best font rendering
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
-header {
-    background: blue;
-    color: #f0f0f0;
-    margin: 0 0 1em 0;
-    padding: 1em;
-}
-
-header form {
-    display: inline;
-    padding: 0;
-    margin: 0;
-}
-
-header button, header a {
-    background: transparent;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    border: 1px solid #fff;
-    padding: 0.3em 0.6em;
-    margin: 0 1em 0 0;
-}
-
-h1, h2 {
-    margin: 0 0 0.5em 0;
-    padding: 0;
+/**
+ * HEADLINES
+ */
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 300;
+	margin: 0px;
 }
 
 section, div {
